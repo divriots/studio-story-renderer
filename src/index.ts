@@ -5,7 +5,7 @@ export async function renderWith(
   require: (dep: string) => any,
   storyResult: unknown,
   div: HTMLElement
-): Promise<void> {
+): Promise<boolean | VoidFunction> {
   const storyType = typeOf(storyResult);
   const rendered = await render(require, storyResult, storyType, div);
   if (!rendered) {
@@ -27,4 +27,5 @@ export async function renderWith(
       }
     }
   }
+  return rendered;
 }
