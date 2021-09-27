@@ -1,2 +1,1 @@
-# studio-story-renderer
-New page
+# Studio Story Renderer
