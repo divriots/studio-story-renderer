@@ -1,4 +1,5 @@
 {
- "name": "@components-studio/divriots.studio-story-renderer",
- "version": "0.0.0"
+  "name": "@components-studio/divriots.studio-story-renderer",
+  "version": "0.0.0",
+  "license": "MIT"
 }
