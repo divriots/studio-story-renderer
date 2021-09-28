@@ -12,8 +12,13 @@ export async function renderWith(
   if (typeof dispose === 'function') {
     const win = div.ownerDocument.defaultView;
     win.addEventListener("unload", dispose);
-    
-    const observer = new MutationObserver(dispose);
+
+    const observer = new MutationObserver((records) => {
+      const deletesRoot = !!records.find(record => Array.from(record.removedNodes).find(node => node.id === "root"));
+      if (deletesRoot) {
+        dispose();
+      }
+    });
     observer.observe(div.parentNode, {childList: true});
   }
 
