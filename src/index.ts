@@ -5,10 +5,19 @@ export async function renderWith(
   require: (dep: string) => any,
   storyResult: unknown,
   div: HTMLElement
-): Promise<boolean | VoidFunction> {
+): Promise<void> {
   const storyType = typeOf(storyResult);
-  const rendered = await render(require, storyResult, storyType, div);
-  if (!rendered) {
+  const dispose = await render(require, storyResult, storyType, div);
+
+  if (typeof dispose === 'function') {
+    const win = div.ownerDocument.defaultView;
+    win.addEventListener("unload", dispose);
+    
+    const observer = new MutationObserver(dispose);
+    observer.observe(div.parentNode, {childList: true});
+  }
+
+  if (!dispose) {
     switch (storyType) {
       case "String": {
         const trimmed = (storyResult as string).trim();
@@ -27,5 +36,4 @@ export async function renderWith(
       }
     }
   }
-  return rendered;
 }
