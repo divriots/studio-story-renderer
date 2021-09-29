@@ -14,9 +14,14 @@ export async function renderWith(
     win.addEventListener("unload", dispose);
 
     const observer = new MutationObserver((records) => {
-      const deletesRoot = !!records.find(record => Array.from(record.removedNodes).find(node => node.id === "root"));
-      if (deletesRoot) {
-        dispose();
+      for (const record of records) {
+        for (const node of Array.from(record.removedNodes || [])) {
+          if (node == div) {
+            dispose();
+            observer.disconnect();
+            return;
+          }
+        }
       }
     });
     observer.observe(div.parentNode, {childList: true});
