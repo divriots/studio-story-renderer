@@ -24,7 +24,7 @@ export async function renderWith(
         }
       }
     });
-    observer.observe(div.parentNode, {childList: true});
+    if(div.parentNode) observer.observe(div.parentNode, {childList: true});
   }
 
   if (!dispose) {
