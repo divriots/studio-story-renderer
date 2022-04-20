@@ -5,7 +5,7 @@ export async function renderWith(
   require: (dep: string) => any,
   storyResult: unknown,
   div: HTMLElement
-): Promise<void> {
+): Promise<void | VoidFunction> {
   const storyType = typeOf(storyResult);
   const dispose = await render(require, storyResult, storyType, div);
 
@@ -25,6 +25,7 @@ export async function renderWith(
       }
     });
     if(div.parentNode) observer.observe(div.parentNode, {childList: true});
+    return dispose;
   }
 
   if (!dispose) {
